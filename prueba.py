@@ -1,3 +1,4 @@
+import math
 # Cada camión recoge sólo un tipo de material.
 # Considera mezcla de ciertos tipos de materiales permitidos.
 # La mezcla de materiales aumenta el nivel de riesgo del traslado al
@@ -13,7 +14,7 @@
 #0 A1 B2 3C 4D
 
 Compatibilidad_Array = [["A","-","C","D","-"],["-","B","C","D","E"],["C","C","C","-","E"],["D","D","-","D","E"],["-","E","E","E","E"]]
-archivo = open("peligro-mezcla4-min-riesgo-zona7-2k-AE.2.hazmat", "r")
+archivo = open("instancias-Santiago.2.hazmat/peligro-mezcla4-min-riesgo-zona6-2k-AE.2.hazmat", "r")
 
 
 '''
@@ -139,6 +140,7 @@ print (capacidad)
 
 nnodos=int(archivo.readline().strip('\n'))
 
+cuociente_camiones = math.trunc(nnodos / numero_camiones)
 visited=[]
 for i in range(nnodos):
     visited.append(0) #zeroes for unvisited nodos.
@@ -314,7 +316,7 @@ print("riesgo A : "+str(Riesgos_tipoA))
 aux_dict_formato ={}
 # aux_formato=[0,0,0]
 # print(nodos)
-for i in range(0,12):
+for i in range(0,nnodos):
     # print(nodos[i])
     # aux_formato[0] = nodos[i]
     # aux_formato[1] = tipos[i]
@@ -352,7 +354,7 @@ while (numero_camiones > 0):
         # nodos, tipos, cantidad
         #   0      1       2
         #se debe obtener la tupla antes q nada
-        tupla = Min_proximo_nodo(distancia, [0,0,0,0,0,0,0,0,0,0,0,0],Grafo.nodos_visitados)
+        tupla = Min_proximo_nodo(distancia, [[0 for x in range(nnodos)] for y in range(nnodos)],Grafo.nodos_visitados)
         distancia_ruta = distancia_ruta + tupla[0]
 
         # riesgo_total = riesgo_ruta + 0
@@ -441,8 +443,9 @@ while (numero_camiones > 0):
         # print("NUMERO DE CAMINONESXD"+ str(aux_iteraciones_camiones))
         # print("NODOS VISITADOS: "+str(Grafo.nodos_visitados))
         # print(len(Grafo.nodos_visitados))
-
-        if(nueva_capacidad == 0 or aux_iteraciones_camiones == 3 or len(Grafo.nodos_visitados)==12):
+        # print("CUOCIENTE" + str((cuociente_camiones)))
+        # if(nueva_capacidad == 0 or aux_iteraciones_camiones == 3  or len(Grafo.nodos_visitados)== nnodos):
+        if(nueva_capacidad == 0 or aux_iteraciones_camiones == cuociente_camiones  or len(Grafo.nodos_visitados)== nnodos):
             print("******CAMIBIO DE CAMION*******")
             lista_ruta.append(Grafo.dict[0][0]) #añadir nodo vuelta inicial
             #QUIZAS AQUI FALTA DISTANCIA DESDE ULTIMO NODO A INICIAL, NO ESTOY SEGURO
